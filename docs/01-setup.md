@@ -7,13 +7,15 @@ All of the back-end systems run inside of Docker containers. During the installa
 ## Prerequisites 
 
 * Bash command line, which can be accomplished natively on Mac or Linux or using [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) on Windows.
-* [Docker](http://www.docker.com) to build the containers. 
+* [Docker](https://docs.docker.com/install/) to build the containers. 
+* [Docker Compose](https://docs.docker.com/compose/install/)
+* [Helm](https://docs.helm.sh/using_helm/#from-script)
 * [Visual Studio 2017 Preview](https://www.visualstudio.com/vs/preview/) with the ASP.NET Web workload installed. 
 * [Azure Dev Spaces Extension for Visual Studio](https://docs.microsoft.com/en-us/azure/dev-spaces/get-started-netcore-visualstudio#get-the-visual-studio-tools). 
 * [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 * [Kubernetes CLI](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 * The [jq](https://stedolan.github.io/jq/) package for bash, which enables jQuery processing. 
-* [Helm](https://helm.sh/) and [Draft](https://github.com/Azure/draft) to ease Kubernetes deployment
+* [Helm](https://docs.helm.sh/using_helm/#from-script) and [Draft](https://github.com/Azure/draft) to ease Kubernetes deployment
 
 ## Set up a Service Principal 
 
@@ -32,7 +34,7 @@ In this step you'll create all of the Azure resources required by the demo. This
     ```
 
 1. Open a bash terminal. CD into the `setup` folder of this repository. 
-1. Some Linux distributions require setting execute permissions on `.sh` files prior to executing them. To be safe, running the command below results in the bash scripts being enabled with execution priveleges. 
+1. Some Linux distributions require setting execute permissions on `.sh` files prior to executing them. To be safe, running the command below results in the bash scripts being enabled with execution privileges. 
 
     ```bash
     chmod +x ./00-set-vars.sh
@@ -55,7 +57,7 @@ In this step you'll create all of the Azure resources required by the demo. This
     * `-a <name>`: Name of the Sh360 app to be installed in the cluster. Defaults to  `myapp`
 
     ```bash
-    source 00-set-vars.sh -g <resource group> -s <subscription id> -n <cluster name> -r <ACR name> -l eastus -c <service principal app id> -p <service principal password>
+    source 00-set-vars.sh -g <resource group> -s <subscription id> -n <cluster name> -r <ACR name> -l 'East US' -c <service principal app id> -p <service principal password>
     ```
 
     > **Important Note:** The only regions in which AKS and Azure Dev Spaces are currently supported are Canada East and Eaat US. So when creating a new AKS cluster for this scenario use either **canadaeast** or **eastus** for the **AKS_REGION** variable.
@@ -71,8 +73,6 @@ Now that the AKS cluster has been created we can publish the SmartHotel360 micro
 ## Deploy the SmartHotel360 Backend APIs
 
 In this segment you'll build the images containing the SmartHotel360 back-end APIs and publish them into ACR, from where they'll be pulled and pushed into AKS when you do your deployment. We've scripted the complex areas of this to streamline the setup process, but you're encouraged to look in the `.sh` files to see (or improve upon) what's happening. 
-
-> Note: Very soon, the repo will be signififcantly updated to make use of Helm as a deployment strategy. For now the scripts are mostly in bash and make use of `kubectl` to interface with the cluster. 
 
 1. CD into the `setup` directory (if not already there) and run this command:
 
